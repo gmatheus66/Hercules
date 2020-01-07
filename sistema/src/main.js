@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import Main from  './components/Main';
-import AddEmp from './components/AddEmp';
+import AddEmp from './components/empresa/AddEmp';
 import Esto from './components/Esto';
 import Emp from './components/empresa/Emp.vue';
 

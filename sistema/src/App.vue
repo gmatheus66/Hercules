@@ -1,102 +1,106 @@
 <template>
   <div id="app">
-    <Header/>
-
-    <div class="t1">
+    <a v-on:click="changedisplay()"><Header/></a>
+<div v-bind:style="{display: this.display}">
+  <div class="t1">
   <section class="container flex">
-	<div class="item1">
+  <div class="item1">
+    <a v-on:click="changedisplay()">
+      <router-link to="/empresas">
+        <div class="empresa">
+          <img id="empresa" src="./assets/icon3.png" alt="icon1">
+        </div>
+        <span>Empresa</span>
+      </router-link>
+    </a>
+  </div>
+  <div class="item1">
     <div >
-<router-link to="/empresas" exact> 
-      <div class="empresa">
-        <img id="empresa" src="./assets/icon3.png" alt="icon1">
-      </div>
-       <span>Empresa</span>
-</router-link>
+      <router-link to="/estoque"> 
+        <div class="estoque">
+          <img id="estoque" width="100px" height="100px" src="./assets/icon7.png" alt="icon1">
+        </div>
+        <span>Estoque</span>
+      </router-link>
     </div>
   </div>
 
-	<div class="item1">
-    <div >
-<router-link to="/estoque"> 
-      <div class="estoque">
-        <img id="estoque" width="100px" height="100px" src="./assets/icon7.png" alt="icon1">
-      </div>
-      <span>Estoque</span>
-</router-link>
-    </div>
-  </div>
-
-	<div class="item1">
-    <div>
-<router-link to="/"> 
+<div class="item1">
+  <div>
+    <router-link to="/"> 
       <div class="secao">
         <img src="./assets/icon8.png" alt="icon1">
       </div>
-        <span class="sp1">Seções</span>
-</router-link>
-    </div>
+      <span class="sp1">Seções</span>
+    </router-link>
   </div>
+</div>
 
-	<div class="item1">
-     <div class="">
-<router-link to="/"> 
+<div class="item1">
+  <div>
+    <router-link to="/"> 
       <div class="funcionario">
         <img src="./assets/icon5.png" alt="icon1">
       </div>
-        <span>Funcionario</span>
-</router-link>
-    </div>
+      <span>Funcionario</span>
+    </router-link>
   </div>
-
-
-
-	<div class="item">
-<router-link to="/"> 
+</div>
+  
+</section>
+</div>
+<div class="t2">
+<section class="container flex">
+<div class="item">
+  <router-link to="/"> 
     <div class="categorias">
-        <img src="./assets/icon2.png" alt="icon1">
-      </div>
-      <span>Categorias</span>
-</router-link>
-  </div>
+      <img src="./assets/icon2.png" alt="icon1">
+    </div>
+    <span>Categorias</span>
+  </router-link>
+</div>
 
-  <div class="item">
-    <div class="">
-<router-link to="/"> 
+<div class="item">
+  <div class="">
+    <router-link to="/"> 
       <div class="marcas">
         <img src="./assets/icon1.png" alt="icon1">
       </div>
       <span>Marcas</span>
-</router-link>
-    </div>
+    </router-link>
   </div>
+</div>
 
-	<div class="item">
-    <div class="">
-<router-link to="/"> 
+<div class="item">
+  <div class="">
+    <router-link to="/"> 
       <div class="fornecedor">
         <img src="./assets/icon4.png" alt="icon1">
       </div>
       <span>Fornecedor</span>
-</router-link>
-    </div>
+    </router-link>
   </div>
+</div>
 
-	<div class="item">
-    <div>
-<router-link to="/"> 
+<div class="item">
+  <div>
+    <router-link to="/"> 
       <div class="produtos">
         <img src="./assets/icon6.png" alt="icon1">
       </div>
-        <span>Produtos</span>
-</router-link>
-    </div>
+      <span>Produtos</span>
+    </router-link>
   </div>
+</div>
 
   </section>
+</div>
 </div>    
     <router-view></router-view>
-<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <p>{{this.display}}</p>
+    <a v-on:click="changedisplay()">change</a>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </div>
      
 </template>
@@ -108,8 +112,22 @@ import Header from './components/Header.vue'
 
 export default {
   name: 'app',
+  data(){
+    return{
+      display: 'block'
+    }
+  },
   components: {
     Header
+  },
+  methods:{
+    changedisplay:function(event){
+      if(this.display == 'block'){
+        this.display = 'none';
+      }else{
+        this.display = 'block';
+      }
+    }
   }
 }
 </script>
@@ -167,19 +185,7 @@ li {
 .sp8{
   margin-left: 15%;
 }
-.item:hover{
-  border: 2px solid black;
-  border-radius: 5px;
-  background-color: #AEE5E2;
-  cursor: pointer;
-}
-.item1:hover{
-  border: 2px solid black;
-  border-radius: 5px;
-  background-color: #AEE5E2;
-  cursor: pointer;
-  text-decoration: none;
-}
+
 a{
   text-decoration: none;
   color: black;
@@ -203,17 +209,15 @@ a:hover{
 	display: flex;
 }
 .t1{
-  height: 20%;
-  width: 100%;
-  position: absolute;
-  margin-top: 2%;
-  padding: 1%;
-
+  margin-left: 25%;
+  margin-right: 25%;
 }
 .t2{
-  margin-top: 5%;
-  margin-left: 25.5%
+  margin-top: 2%;
+  margin-left: 25%;
+  margin-right: 25%;
 }
+
 span{
   text-decoration: none;
   color: black;
@@ -222,5 +226,9 @@ span{
 img{
   width: 60px;
   height: 60px;
+}
+a{
+  text-decoration: none;
+  color: black;
 }
 </style>
