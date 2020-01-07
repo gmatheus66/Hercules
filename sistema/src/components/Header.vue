@@ -34,4 +34,7 @@ export default {
     background-color: #AEE5E2;
     padding-bottom: 1%;
 }
+h1{
+    margin: 0%;
+}
 </style>
