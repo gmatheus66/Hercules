@@ -3,45 +3,38 @@
         <h2 class="empresatitulo">Adicionar Empresa</h2>
         <div class="line"></div> 
 
-        <div v-if="this.info" class="alert alert-warning" role="alert">
-             A simple warning alert—check it out!
-        </div>
-        <div v-if="this.info.data" class="alert alert-success" role="alert">
-            {{this.info.data.msg}}
-        </div>
+      
         <form id="data" class="formadd" @submit.prevent="onSubmit">
             <div class="row">
                  <div class="col">
-                    <input type="text" class="form-control" name="razao" id="" v-model="form.razao" placeholder="Razão Social">
+                    <input type="text" class="form-control" name="razao" id="razao" v-model="form.razao" placeholder="Razão Social">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control" name="cnpj" id="" v-model="form.cnpj" placeholder="CNPJ">
+                    <input type="text" class="form-control" name="cnpj" id="cnpj" v-model="form.cnpj" placeholder="CNPJ">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control" name="nome_fantasia"  v-model="form.nome_fantasia" placeholder="Nome Fantasia">
+                    <input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" v-model="form.nome_fantasia" placeholder="Nome Fantasia">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="number" class="form-control" name="ddd" id="" v-model="form.ddd" placeholder="DDD">
+                    <input type="number" class="form-control" name="ddd" id="ddd" v-model="form.ddd" placeholder="DDD">
                 </div>
                 <div class="col">
-                    <input type="number" class="form-control" name="telefone" id="" v-model="form.telefone" placeholder="Telefone" maxlength="9">
+                    <input type="number" class="form-control" name="telefone" id="telefone" v-model="form.telefone" placeholder="Telefone" maxlength="9">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control" name="nome_contato" id="" v-model="form.nome_contato" placeholder="Nome Contato">   
+                    <input type="text" class="form-control" name="nome_contato" id="nome_contato" v-model="form.nome_contato" placeholder="Nome Contato">   
                 </div>
             </div>
             <button type="submit">Enviar</button>         
         </form>
-        <p>{{this.form}}</p>
-        <p>{{JSON.stringify(this.form)}}</p>
         <p>{{this.info}}</p>
     </div>
 </template>
@@ -68,7 +61,7 @@ export default {
         
             onSubmit(evt) {
                 evt.preventDefault()
-                alert(queryString.stringify(this.form))
+                //alert(queryString.stringify(this.form))
                 axios
                 .post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form))
                 .then(response => (this.info = response.data)).catch(error => (this.info = error))
