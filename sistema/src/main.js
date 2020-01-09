@@ -3,13 +3,14 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import Main from  './components/Main';
 import AddEmp from './components/empresa/AddEmp';
-import Esto from './components/Esto';
+import Esto from './components/estoque/Esto';
 import Emp from './components/empresa/Emp.vue';
-
+import EditEmp from './components/empresa/EditEmp';
+import AddEsto from './components/estoque/AddEsto';
+import EditEsto from './components/estoque/EditEsto'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
-
 //const Bar = { template: '<div>bar</div>' }
 const Login = {
   template: '<div>Login</div>'
@@ -23,15 +24,18 @@ const Bar = {
 
 const router = new VueRouter({
   routes: [
-      { path: '/bar', component: Bar },
-      { path: '/login' , component: Login},
-      {path: '/abt' , component:Main},
-      {path: '/addempresas' , component: AddEmp},
-      {path: '/empresas' , component:Emp},
-      {path: '/estoque', component: Esto},
-
-    ]
-
+    { path: '/bar', component: Bar },
+    { path: '/login' , component: Login},
+    {path: '/abt' , component:Main},
+    {path: '/addempresas' , component: AddEmp},
+    {path: '/empresas' , component:Emp},
+    {path: '/estoque', component: Esto},
+    {path: '/editemp/:id', name: 'edit', component: EditEmp, props:true },
+    {path: '/editesto/:id', name: 'editesto', component: EditEsto, props:true },
+    {path: '/addest', component: AddEsto}
+    
+  ]
+  
 })
 
 new Vue({
