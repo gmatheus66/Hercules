@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <a v-on:click="changedisplay()"><Header/></a>
+    <a v-on:click="changedisplayToblock()"><Header/></a>
 <div v-bind:style="{display: this.display}">
   <div class="t1">
   <section class="container flex">
   <div class="item1">
-    <a v-on:click="changedisplay()">
+    <a v-on:click="changedisplayTonone()">
       <router-link to="/empresas">
         <div class="empresa">
           <img id="empresa" src="./assets/icon3.png" alt="icon1">
@@ -16,12 +16,14 @@
   </div>
   <div class="item1">
     <div >
+    <a v-on:click="changedisplayTonone()">
       <router-link to="/estoque"> 
         <div class="estoque">
           <img id="estoque" width="100px" height="100px" src="./assets/icon7.png" alt="icon1">
         </div>
         <span>Estoque</span>
       </router-link>
+    </a>
     </div>
   </div>
 
@@ -114,19 +116,18 @@ export default {
   name: 'app',
   data(){
     return{
-      display: 'block'
+      display: 'block',
     }
   },
   components: {
     Header
   },
   methods:{
-    changedisplay:function(event){
-      if(this.display == 'block'){
-        this.display = 'none';
-      }else{
-        this.display = 'block';
-      }
+    changedisplayToblock:function(event){
+      this.display = 'block'
+    },
+    changedisplayTonone:function(event){
+      this.display = 'none'
     }
   }
 }
