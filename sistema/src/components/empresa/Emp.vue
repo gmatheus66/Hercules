@@ -7,7 +7,9 @@
             </div>
         </router-link>
          <div class="line"></div> 
-        
+        <div class="alert alert-danger"  v-if="erroremp" role="alert">
+            Aguarde um momento...
+        </div>
         <table>
             <thead>
                 <tr>
@@ -29,7 +31,7 @@
                     <td>{{component.ddd}}</td>
                     <td>{{component.telefone}}</td>
                     <td>{{component.nome_contato}}</td>
-                    <td><i class="large material-icons">create</i></td>
+                    <td> <router-link :to="'/editemp/' + component.id"  ><i class="large material-icons">create</i> </router-link></td>
                     <td><i class="large material-icons">delete_forever</i></td>
                 </tr>
             </tbody>
@@ -47,12 +49,15 @@ export default {
     data(){
         return{
         info:null,
+        erroremp: null
         }  
     },
+   
     mounted(){
         axios
       .get('https://apist.herokuapp.com/api/empresa')
       .then(response => (this.info = response.data))
+      .catch(error => (this.erroremp = error))
         
         
         /*
@@ -73,6 +78,11 @@ export default {
         )
          */
     },
+    methods:{
+        addParams(nome,id){
+            this.$router.push({name: nome, params: {i: id}})
+        }
+    }
    
 }
 </script>
@@ -117,7 +127,7 @@ table,tr,th,td{
     font-weight: bold;
 }
 a{
-  text-decoration: none;
-  color: black;
+  text-decoration: none !important;
+  color: black !important;
 }
 </style>
