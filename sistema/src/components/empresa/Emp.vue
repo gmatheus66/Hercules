@@ -1,26 +1,34 @@
 <template v-bind:is="currentView">
     <div class="emp">
-        <h2 class="empresatitulo">Empresas</h2>
-        <router-link to="/addempresas">
-            <div class="btnadd">
-                <span class="addtext">ADICIONAR</span><img id="icadd" src="../../assets/ic_add.png" alt="icadd">
-            </div>
-        </router-link>
+        <div class="submain">
+            <h2 class="empresatitulo">Empresas</h2>
+            <router-link to="/addempresas">
+                <div class="btnaddemp">
+                    <span class="addtext">ADICIONAR</span><img id="icadd" src="../../assets/ic_add.png" alt="icadd">
+                </div>
+            </router-link>
+        </div>
          <div class="line"></div> 
         <div class="alert alert-danger"  v-if="erroremp" role="alert">
             Aguarde um momento...
         </div>
-        <table>
+         <div  v-if="this.delete" class="alert alert-dark alertemp" role="alert">
+            <ul v-for="(inf,id) in this.delete" v-bind:key="id">
+                <li v-if="!inf.msg">{{inf}}</li>
+                <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
+            </ul>
+        </div>
+        <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Razão Social</th>
-                    <th>CNPJ</th>
-                    <th>Nome Fantasia</th>
-                    <th>DDD</th>
-                    <th>Telefone</th>
-                    <th>Contato</th>
-                    <th>Editar</th>
-                    <th>Deletar</th>
+                    <th scope="col">Razão Social</th>
+                    <th scope="col">CNPJ</th>
+                    <th scope="col">Nome Fantasia</th>
+                    <th scope="col">DDD</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Contato</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,14 +40,16 @@
                     <td>{{component.telefone}}</td>
                     <td>{{component.nome_contato}}</td>
                     <td> <router-link :to="'/editemp/' + component.id"  ><i class="large material-icons">create</i> </router-link></td>
-                    <td><i class="large material-icons">delete_forever</i></td>
+                    <td><i v-on:click="delete_empresa(component.id, idx)" class="large material-icons">delete_forever</i></td>
                 </tr>
             </tbody>
         </table>
     </div>
+    
 </template>
 <script>
 import axios from 'axios';
+//import { timeout } from 'q';
 //import AddEmp from './AddEmp';
 export default {
     name: 'Empresa',
@@ -48,12 +58,15 @@ export default {
     },
     data(){
         return{
-        info:null,
-        erroremp: null
+            info:null,
+            erroremp: null,
+            delete: null,
+            delete_length: null
         }  
     },
    
     mounted(){
+        this.$display_home.value = 'none'
         axios
       .get('https://apist.herokuapp.com/api/empresa')
       .then(response => (this.info = response.data))
@@ -81,6 +94,16 @@ export default {
     methods:{
         addParams(nome,id){
             this.$router.push({name: nome, params: {i: id}})
+        },
+        delete_empresa(id, deleteid){
+            axios
+            .delete('https://apist.herokuapp.com/api/empresa/'+ id)
+            .then(response => (this.delete = response.data))
+            .catch(error =>(this.erroremp = error))
+            
+            this.info.splice(deleteid,1)
+
+            //timeout.setTimeout(this.delete.splice(0,1) , 1000)
         }
     }
    
@@ -88,43 +111,54 @@ export default {
 </script>
 
 <style >
-table,tr,th,td{
+table{
     margin: auto;
-    border: 1px solid black;
-    border-collapse: collapse;
+    margin-top: 2% !important;
+}
+thead{
+    background-color: #AEE5E2;
+}
+tr,th,td{
     text-align: center;
 }
+
 .line{
     
     border-bottom: 5px solid #AEE5E2;
-    margin-left: 4%;
+    margin-left: 2%;
     margin-top: 1%;
     border-radius: 10px;
 }
 .emp{
-    position: relative;
-    margin-top: 15%;
+    margin-top: 5%;
 }
 .empresatitulo{
+    display: inline-block;
     color: black;
-    margin-left: 4%;
+    margin-left: 2%;
 }
-.btnadd{
-    position: absolute;
+.btnaddemp{
+    text-align: center;
+    display: inline;
     border: 0px solid black;
     background-color: #B9FAA8;
-    top: -1%;
-    left:81%;
-    right: 4%;
     margin-bottom: 1%;
+    padding-top: 2%;
+    padding-left: 1%;
+    padding-bottom: 2%;
+    padding-right: 1%;
+    margin-left: 60%;
+    margin-right: 5%;
 
 }
 .addtext{
-    position: relative;
-    margin-top: 50%;
-    margin-left: 5%;
+    display: inline;
     font-size: 1.5em;
     font-weight: bold;
+}
+#icadd{
+    display: inline;
+    margin-left: 1%;
 }
 a{
   text-decoration: none !important;

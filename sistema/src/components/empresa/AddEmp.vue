@@ -1,41 +1,54 @@
 <template>
     <div class="emp">
-        <h2 class="empresatitulo">Adicionar Empresa</h2>
+        <router-link to="/empresas">
+            <h2 class="empresatitulo">Adicionar Empresa</h2>
+        </router-link>
         <div class="line"></div> 
 
+        <div  v-if="this.info" class="alert alert-dark alertemp" role="alert">
+            <ul v-for="(inf,id) in this.info" v-bind:key="id">
+                <li v-if="!inf.msg">{{inf}}</li>
+                <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
+            </ul>
+        </div>
       
-        <form id="data" class="formadd" @submit.prevent="onSubmit">
-            <div class="row">
-                 <div class="col">
+        <form id="data" class="form-group formadd" @submit.prevent="onSubmit">
+            <div class="form-group row">
+                <label for="razao" class="col-sm-2 col-form-label">Razão Social</label>
+                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="razao" id="razao" v-model="form.razao" placeholder="Razão Social">
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
+            <div class="form-group row">
+                <label for="cnpj" class="col-sm-2 col-form-label">CNPJ</label>
+                <div class="col-sm-8">
                     <input type="text" class="form-control" name="cnpj" id="cnpj" v-model="form.cnpj" placeholder="CNPJ">
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
+            <div class="form-group row">
+                <label for="nome_fantasia" class="col-sm-2 col-form-label">Nome Fantasia</label>
+                <div class="col-sm-8">
                     <input type="text" class="form-control" name="nome_fantasia" id="nome_fantasia" v-model="form.nome_fantasia" placeholder="Nome Fantasia">
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <input type="number" class="form-control" name="ddd" id="ddd" v-model="form.ddd" placeholder="DDD">
+            <div class="form-group row">
+                <label for="ddd" class="col-sm-1 col-form-label">DDD</label>
+                <label for="telefone" class="col-sm-1 col-form-label">Telefone</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control" maxlength="2" name="ddd" id="ddd" v-model="form.ddd" placeholder="DDD">
                 </div>
-                <div class="col">
+                <div class="col-sm-6">
                     <input type="number" class="form-control" name="telefone" id="telefone" v-model="form.telefone" placeholder="Telefone" maxlength="9">
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
+            <div class="form-group row">
+                <label for="nome_contato" class="col-sm-2 col-form-label">Nome Contato</label>
+                <div class="col-sm-8">
                     <input type="text" class="form-control" name="nome_contato" id="nome_contato" v-model="form.nome_contato" placeholder="Nome Contato">   
                 </div>
             </div>
-            <button type="submit">Enviar</button>         
+            <button class="submit" type="submit">Salvar<i class="large material-icons save">save</i></button>         
         </form>
-        <p>{{this.info}}</p>
     </div>
 </template>
 <script>
@@ -53,7 +66,8 @@ export default {
                 telefone: null,
                 nome_contato: ''
             },
-            info: null
+            info: null,
+            error: null
 
         }
     },
@@ -64,7 +78,7 @@ export default {
                 //alert(queryString.stringify(this.form))
                 axios
                 .post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form))
-                .then(response => (this.info = response.data)).catch(error => (this.info = error))
+                .then(response => (this.info = response.data)).catch(error => (this.error = error))
             },
            /*
             addempresa(){
@@ -96,5 +110,27 @@ export default {
 a{
   text-decoration: none !important;
   color: black;
+}
+#data{
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-right: 5%;
+}
+.submit{
+    margin-left: 39%;
+    background-color: #B9FAA8;
+    padding: 0.5%;
+    text-align: center;
+    font-weight: bold;
+}
+.save{
+    margin-top: 1%;
+    width: 30px;
+    height: 20px;
+}
+.alertemp{
+    margin-top: 1%;
+    margin-left: 10%;
+    margin-right: 20%;
 }
 </style>
