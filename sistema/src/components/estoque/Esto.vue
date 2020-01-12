@@ -1,22 +1,31 @@
 <template>
     <div class="emp">
-        <h2 class="empresatitulo">Estoque</h2>
-        <router-link to="/addestoque">
-            <div class="btnadd">
-                <span class="addtext">ADICIONAR</span><img id="icadd" src="../../assets/ic_add.png" alt="icadd">
-            </div>
-        </router-link>
+        <div class="submain">
+            <h2 class="empresatitulo">Estoque</h2>
+            <router-link to="/addestoque">
+                <div class="btnaddesto">
+                    <span class="addtext">ADICIONAR</span><img id="icadd" src="../../assets/ic_add.png" alt="icadd">
+                </div>
+            </router-link>
+        </div>
         <div class="line"></div> 
 
-        <table>
+        <div  v-if="this.delete" class="alert alert-dark alertemp" role="alert">
+            <ul v-for="(inf,id) in this.delete" v-bind:key="id">
+                <li v-if="!inf.msg">{{inf}}</li>
+                <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
+            </ul>
+        </div>        
+
+        <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Codigo</th>
-                    <th>Descricao</th>
-                    <th>Tipo Armazem</th>
-                    <th>Empresa</th>
-                    <th>Editar</th>
-                    <th>Deletar</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Descricao</th>
+                    <th scope="col">Tipo Armazem</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +35,7 @@
                     <td>{{component.tipo_armazem}}</td>
                     <td v-show="l">{{empresa(component.empresa_id)}}</td>
                     <td> <router-link :to="'/editesto/' + component.id"  ><i class="large material-icons">create</i> </router-link></td>
-                    <td><i class="large material-icons">delete_forever</i></td>
+                    <td><i v-on:click="delete_estoque(component.id, idx)" class="large material-icons">delete_forever</i></td>
                 </tr>
             </tbody>
         </table>
@@ -50,6 +59,7 @@ export default {
             erro: null,
             error: null,
             l: null,
+            delete: null
             
         }
     },
@@ -74,7 +84,16 @@ export default {
                 }
            }
          
+        },
+        delete_estoque(id, deleteid){
+            axios
+            .delete('https://apist.herokuapp.com/api/estoque/'+ id)
+            .then(response => (this.delete = response.data))
+            .catch(error =>(this.error = error))
+
+            this.info.splice(deleteid,1)
         }
+        
     }
 }
 </script>
@@ -88,14 +107,29 @@ export default {
    margin-top: 20%;
 }
 .addtext{
-    position: relative;
-    margin-top: 50%;
-    margin-left: 5%;
-    font-size: 1.5em;
-    font-weight: bold;
+ 
 }
 .estoquetitulo{
     color: black;
     margin-left: 4%;
+}
+.btnaddesto{
+    text-align: center;
+    display: inline;
+    border: 0px solid black;
+    background-color: #B9FAA8;
+    margin-bottom: 1%;
+    padding-top: 2%;
+    padding-left: 1%;
+    padding-bottom: 2%;
+    padding-right: 1%;
+    margin-left: 60%;
+    margin-right: 5%;
+
+}
+.addtext{
+    display: inline;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 </style>

@@ -10,6 +10,9 @@
     <div class="alert alert-danger"  v-if="errorput" role="alert">
             Aguarde um momento...
     </div>
+    <div class="alert alert-danger"  v-if="savedit" role="alert">
+            {{this.savedit}}
+    </div>
     
     {{selectempresa()}}
 
@@ -26,13 +29,18 @@
             </div>
             <div class="row">
                 <div class="col">
+                    <select name="selectemp" v-model="estoque.tipo_armazem" >
+                        <option selected disabled>Selecione uma Empresa</option>
+                        <option value="Padrão">Padrão</option>
+                        <option value="Terceiros">Terceiros</option>
+                        <option value="Próprio">Próprio</option>
+                    </select>
                     <select name="selectemp" v-model="estoque.empresa_id" >
                         <option selected disabled>Selecione uma Empresa</option>
                             <option v-for="(empresa, id) in this.empresa" v-bind:key="id"  :value="empresa.id">{{empresa.nome_fantasia}}</option>
                     </select>
                 </div>
             </div>
-            
             <button type="submit">Enviar</button>         
         </form>
     {{this.savedit}}
@@ -59,6 +67,7 @@ export default {
             empresa: null,
             savedit: null,
             empresaid_original: null,
+            estoque_tipo_original:null,
             errorput: null
         }
     },
@@ -68,7 +77,7 @@ export default {
             this.infoesto = response.data[0],
             this.estoque.codigo = response.data[0].codigo,
             this.estoque.descricao = response.data[0].descricao,
-            this.estoque.tipo_armazem = response.data[0].tipo_armazem,
+            this.estoque_tipo_original = response.data[0].tipo_armazem,
             this.empresaid_original = response.data[0].empresa_id
         )) 
     
@@ -84,7 +93,7 @@ export default {
                 alert( queryString.stringify(this.estoque))
                 this.estoque.empresa_id = this.empresaid_original;
             }
-            axios.put('https://apist.herokuapp.com/api/estoque/'+ this.$attrs.id, queryString.stringify(this.estoque), { useCredentials: true })
+            axios.put('https://apist.herokuapp.com/api/estoque/'+ this.$attrs.id + '?', queryString.stringify(this.estoque), { useCredentials: true })
                 .then(response => (this.savedit = response.data))
                 .catch(error =>(this.errorput = error) )
             
