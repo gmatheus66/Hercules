@@ -62,5 +62,7 @@ export default {
 </script>
 
 <style>
-
+.editcategoria{
+    margin-top: 5%;
+}
 </style>

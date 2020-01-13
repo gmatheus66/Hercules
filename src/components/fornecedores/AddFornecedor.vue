@@ -13,6 +13,9 @@
                 <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
             </ul>
     </div> 
+    <div  v-if="this.errorcep" class="alert alert-dark alertemp" role="alert">
+        {{this.errorcep}}
+    </div>
     <form class="form-group formaddfornecedor" @submit.prevent="addfornecedor">
         <div class="form-group row">
             <label for="razao" class="col-sm-2 col-form-label">Razão Social</label>
@@ -39,7 +42,7 @@
             </div>
             <label for="cep" class="col-sm-1 col-form-label">Cep</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="cep" id="cep" v-model="fornecedor.cep" placeholder="Cep">
+                <input type="text" class="form-control" name="cep" id="cep" v-on:keyup="validationcep" v-model="fornecedor.cep" placeholder="Cep">
             </div>
         </div>
          <div class="form-group row">
@@ -100,6 +103,25 @@ export default {
             axios.post('https://apist.herokuapp.com/api/fornecedor?', queryString.stringify(this.fornecedor))
             .then(response => (this.info = response.data))
             .catch(error => (this.error = error.data))
+        },
+        validationcep(){
+            axios.get('https://viacep.com.br/ws/'+ this.fornecedor.cep +'/json/')
+            .then(response => {
+                this.cep = response
+                if(this.cep.statusText == "OK" && this.cep.data.erro != true){
+                    this.fornecedor.bairro = this.cep.data.bairro
+                    this.fornecedor.endereco = this.cep.data.logradouro
+                    this.fornecedor.cidade = this.cep.data.localidade
+                    this.fornecedor.estado = this.cep.data.uf
+                    this.errorcep = null
+                }
+                if(this.cep.data.erro == true){
+                    this.errorcep = "Cep Invalido"
+                }
+
+
+            })
+            .catch(error => (this.error = error))
         }
     }
 
