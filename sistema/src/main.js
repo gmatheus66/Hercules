@@ -10,16 +10,23 @@ import AddEsto from './components/estoque/AddEsto';
 import EditEsto from './components/estoque/EditEsto';
 import Marca from './components/marca/Marca';
 import AddMarca from './components/marca/AddMarca';
+import EditMarca from './components/marca/EditMarca';
 import Categoria from './components/categoria/Categoria';
 import AddCategoria from './components/categoria/AddCategoria';
+import EditCategoria from './components/categoria/EditCategoria';
 import Secao from './components/secoesestoque/SecaoEstoque';
 import AddSecao from './components/secoesestoque/AddSecao';
+import EditSecao from './components/secoesestoque/EditSecao';
 import Funcionario from './components/funcionario/Funcionario';
 import AddFuncionario from './components/funcionario/AddFuncionario';
+import EditFuncionario from './components/funcionario/EditFuncionario';
 import Fonecedor from './components/fornecedores/Fornecedor';
 import AddFornecedor from './components/fornecedores/AddFornecedor';
+import EditFornecedor from './components/fornecedores/EditFornecedor';
 import Produto from './components/produto/Produto';
 import AddProduto from './components/produto/AddProduto';
+import EditProduto from './components/produto/EditProduto';
+
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -47,16 +54,22 @@ const router = new VueRouter({
     {path: '/addestoque', component: AddEsto},
     {path: '/marca', name: 'marca',component: Marca},
     {path: '/addmarca', component: AddMarca},
+    {path: '/editmarca/:id', name: 'editmarca', component: EditMarca, props: true},
     {path: '/categoria', component: Categoria},
     {path: '/addcategoria', component: AddCategoria},
+    {path: '/editcategoria/:id', name: 'editcategoria', component: EditCategoria, props: true},
     {path: '/secao', component: Secao},
     {path: '/addsecao', component: AddSecao},
+    {path: '/editsecao/:id', name: 'editsecao', component: EditSecao, props: true },
     {path: '/funcionario', component: Funcionario},
     {path: '/addfuncionario', component: AddFuncionario},
+    {path: '/editfuncionario/:id', name: 'editfunc', component: EditFuncionario, props: true},
     {path: '/fornecedor', component: Fonecedor},
     {path: '/addfornecedor', component: AddFornecedor},
+    {path: '/editfornecedor/:id', name: 'editfornecedor', component: EditFornecedor, props: true},
     {path: '/produto', component: Produto},
-    {path: '/addproduto', component: AddProduto}
+    {path: '/addproduto', component: AddProduto},
+    {path: '/editproduto/:id', name: 'editproduto', component: EditProduto, props: true}
 
     
   ]
