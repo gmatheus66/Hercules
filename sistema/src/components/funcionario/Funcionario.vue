@@ -44,7 +44,7 @@
                 <td>{{funcionario.bairro}}</td>
                 <td>{{funcionario.estado}}</td>
                 <td>{{funcionario.pais}}</td>
-                <td> <router-link :to="'/editmarca/' + funcionario.id"  ><i class="large material-icons">create</i> </router-link></td>
+                <td> <router-link :to="'/editfuncionario/' + funcionario.id"  ><i class="large material-icons">create</i> </router-link></td>
                 <td><i v-on:click="delete_funcionario(funcionario.id, id)" class="large material-icons">delete_forever</i></td>
             </tr>
         </tbody>
