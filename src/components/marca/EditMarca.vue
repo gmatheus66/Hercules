@@ -22,7 +22,6 @@
             </div>
           <button class="submit submitcategoria" type="submit">Salvar<i class="large material-icons save">save</i></button>     
     </form>
-    {{this.marcas}}
   </div>
 </template>
 
