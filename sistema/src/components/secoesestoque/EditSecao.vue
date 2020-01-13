@@ -1,18 +1,17 @@
 <template>
-    <div class="addsecao">
-          <div class="addsecoes">
+  <div class="editsecao">
+      <div class="addsecoes">
         <router-link to="/secao">
-            <h2 class="secaotitulo">Adicionar Seções</h2>
+            <h2 class="secaotitulo">Editar Seção</h2>
         </router-link>
         <div class="line"></div> 
         </div>
     <div  v-if="this.info" class="alert alert-dark alertemp" role="alert">
             <ul v-for="(inf,id) in this.info" v-bind:key="id">
-                <li v-if="!inf.msg">{{inf}}</li>
-                <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
+                <li>{{inf}}</li>
             </ul>
     </div>
-    <form class="addsecaoform" id="form-group formestoque" @submit.prevent="savesecao">
+    <form class="addsecaoform" id="form-group formestoque" @submit.prevent="saveeditsecao">
         <div class="form-group row">
              <label for="selectarmazem" class="col-sm-2 col-form-label">Tipo do Armazém</label>
             <div class="col-sm-3">
@@ -28,19 +27,20 @@
         </div>
         <button class="submit submitsecao" type="submit">Salvar<i class="large material-icons save">save</i></button>
     </form>
-    </div>
-  
+
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
 const queryString = require('query-string');
 export default {
-    name: 'AddSecao',
+    name:'EditSecao',
     data(){
         return{
             info: null,
             error:null,
+            data: null,
             secao:{
                 descricao: null,
                 estoque_id: null
@@ -49,15 +49,22 @@ export default {
         }
     },
     mounted(){
+        axios.get('https://apist.herokuapp.com/api/secaoestoque/'+ this.$attrs.id )
+        .then(response => {
+            this.data = response.data
+            this.secao.descricao = response.data[0].descricao
+            this.secao.estoque_id = response.data[0].estoque_id
+        })
+        .catch(error => (this.error = error))
+
         axios.get('https://apist.herokuapp.com/api/estoque')
         .then(response => (this.armazem = response.data))
         .catch(error => (this.error =  error))
     },
     methods:{
-        savesecao: function(evt){
+        saveeditsecao(evt){
             evt.preventDefault();
-            //alert(queryString.stringify(this.secao))
-            axios.post('https://apist.herokuapp.com/api/secaoestoque?', queryString.stringify(this.secao))
+            axios.put('https://apist.herokuapp.com/api/secaoestoque/'+ this.$attrs.id, queryString.stringify(this.secao) )
             .then(response => (this.info = response.data))
             .catch(error => (this.error = error))
         }
@@ -66,16 +73,7 @@ export default {
 </script>
 
 <style>
-.addsecao{
+.editsecao{
     margin-top: 5%;
-}
-.addsecaoform{
-    margin-top: 5%;
-    margin-left: 9%;
-    margin-right: 2%;
-}
-.submitsecao{
-    margin-top: 2%;
-
 }
 </style>
