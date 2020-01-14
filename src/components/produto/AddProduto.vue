@@ -51,7 +51,7 @@
                 <label for="preco_venda" class="col-sm-0 col-form-label">Preço Venda</label>
                 <input type="number" class="form-control" name="preco_venda" id="preco_venda" v-model="produto.preco_venda" placeholder="Preço Venda" required>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label for="unidade" class="col-sm-0 col-form-label">Unidade</label>
                  <select class="custom-select" name="unidade" id="unidade" v-model="produto.unidade_medida" required> 
                         <option selected disabled>Selecione uma Unidade</option>
@@ -61,6 +61,10 @@
                         <option value="CX">CX</option>
                         <option value="CJ">CJ</option>
                 </select>
+            </div>
+            <div class="col-sm-2">
+                <label for="data_validade" class="col-sm-0 col-form-label">Data de Validade</label>
+                <input type="date" class="form-control" name="data_validade" id="data_validade" v-model="produto.data_validade" required>
             </div>
         </div>
 
@@ -145,7 +149,8 @@ export default {
                 marca_id: null,
                 categoria_id: null,
                 secao_id: null,
-                fornecedor_id: null
+                fornecedor_id: null,
+                data_validade: null
             }
 
         }
