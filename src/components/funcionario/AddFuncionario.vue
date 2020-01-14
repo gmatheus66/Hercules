@@ -119,7 +119,7 @@ export default {
             axios.post('https://apist.herokuapp.com/api/funcionario?',queryString.stringify(this.funcionario))
             .then(response => {
                 this.data = response.data
-                if(response.statusText == "OK"){
+                if(response.statusText == "OK" && this.data.data.msg == "Funcionario cadastrado com sucesso"){
                     this.funcionario.nome = null
                     this.funcionario.idade = null
                     this.funcionario.endereco = null
