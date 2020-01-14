@@ -15,6 +15,7 @@
             <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
         </ul>
      </div>
+    <a class="btn btn-outline-secondary relbtn" v-on:click="relatoriodata()" >Relatório por data <i  class="large material-icons">picture_as_pdf</i></a>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -43,11 +44,16 @@
             </tr>
         </tbody>
     </table>
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import moment from 'moment';
+//const fs = require('fs');
 export default {
     name: 'Produto',
     data(){
@@ -56,7 +62,8 @@ export default {
             error: null,
             length: null,
             secao: null,
-            delete: null
+            delete: null,
+            reldata: null
         }
     },
     mounted(){
@@ -66,6 +73,11 @@ export default {
 
         axios.get('https://apist.herokuapp.com/api/secaoestoque')
         .then(response => (this.secao = response.data))
+        .catch(error => (this.error = error.data))
+
+
+        axios.get('https://apist.herokuapp.com/api/relatoriodata')
+        .then(response => (this.reldata = response.data))
         .catch(error => (this.error = error.data))
     },
     methods:{
@@ -84,6 +96,57 @@ export default {
             .catch(error =>(this.error = error))
 
             this.produto.splice(deleteid, 1)
+        },
+        relatoriodata(){
+            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            moment.locale('pt-BR')
+            
+            /*        
+            let fonts = {
+                Roboto: {
+                    normal: 'fonts/Roboto-Regular.ttf',
+                    bold: 'fonts/Roboto-Medium.ttf',
+                    italics: 'fonts/Roboto-Italic.ttf',
+                    bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+                }
+            };
+            let printer = new PdfMake(fonts);
+            */
+           let corpotable = [
+               ['Nome','Preço Custo', 'Lucro', 'Preço Venda' ,'Unidade', 'Origem', 'Seção', 'Data de Validade']
+           ]
+           //this.reldata.forEach(element => corpotable.push([element.nome, element.preco_custo, element.lucro, element.preco_venda, element.unidade, element.secao, element.data_validade ]));
+            for(let i =0; i < this.reldata.length; i++ ){
+                corpotable.push([ this.reldata[i].nome,
+                 this.reldata[i].preco_custo,
+                  this.reldata[i].lucro, 
+                  this.reldata[i].preco_venda,
+                  this.reldata[i].unidade_medida, 
+                  this.reldata[i].origem, 
+                  this.getsecao(this.reldata[i].secao_id),
+                   moment(this.reldata[i].data_validade).format('DD/MM/YYYY') 
+                   ])
+            }
+            var docDefinition = {
+                content: [
+                    { text: 'Relatório', style: 'header' },
+                    { text: 'Relatório de produtos por data de vencimento.', style: 'subheader' },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            body: corpotable
+                        }
+                    }
+                ]
+            };
+
+            /*
+            let pdfDoc = printer.createPdfKitDocument(docDefinition);
+            pdfDoc.pipe(fs.createWriteStream('pdfs/basics.pdf'));
+            pdfDoc.end();
+            */ 
+           pdfMake.createPdf(docDefinition).open();
+        
         }
     }
 }
@@ -111,5 +174,11 @@ export default {
     margin-left: 60%;
     margin-right: 5%;
 
+}
+.relbtn{
+    display: inline-block;
+    margin-top: 1%;
+    margin-left: 75%;
+    margin-right: 10%;
 }
 </style>

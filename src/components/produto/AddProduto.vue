@@ -180,7 +180,7 @@ export default {
         addproduto(evt){
             evt.preventDefault();
             axios.post('https://apist.herokuapp.com/api/produto?', queryString.stringify(this.produto))
-            .then(response => (this.info = response.data))
+            .then(response => {this.info = response.data})
             .catch(error => (this.error = error))
         }
     }
