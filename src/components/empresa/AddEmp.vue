@@ -77,21 +77,14 @@ export default {
             onSubmit(evt) {
                 evt.preventDefault()
                 //alert(queryString.stringify(this.form))
-                /*
-                let axiosConfig = {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'WithCredentials': true,
-                        "Access-Control-Allow-Origin": "*",
-
-                    }
-                };
+                
                 axios
-                .post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form),axiosConfig)
+                .post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form))
                 .then(response => (this.info = response.data)).catch(error => (this.error = error))
-                */
-                http.post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form),{useCredentials: true})
+                /*
+                http.post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form))
                 .then(response => (this.info = response.data)).catch(error => (this.error = error))
+              */
             },
            /*
             addempresa(){
