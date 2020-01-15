@@ -52,8 +52,9 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 const queryString = require('query-string');
+import { http } from '../../services/config';
 export default {
     name: 'AddEmp',
     data(){
@@ -76,19 +77,20 @@ export default {
             onSubmit(evt) {
                 evt.preventDefault()
                 //alert(queryString.stringify(this.form))
+                /*
                 let axiosConfig = {
-                    withCredentials: true,
-                    crossorigin: true,
                     headers: {
-                        common:{
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'WithCredentials': true,
-                            'Access-Control-Allow-Origin': 'http://herculestock.herokuapp.com'
-                        }
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'WithCredentials': true,
+                        "Access-Control-Allow-Origin": "*",
+
                     }
                 };
                 axios
                 .post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form),axiosConfig)
+                .then(response => (this.info = response.data)).catch(error => (this.error = error))
+                */
+                http.post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form),{useCredentials: true})
                 .then(response => (this.info = response.data)).catch(error => (this.error = error))
             },
            /*
