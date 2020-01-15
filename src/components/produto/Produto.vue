@@ -15,7 +15,10 @@
             <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
         </ul>
      </div>
-    <a v-if="produto != null" class="btn btn-outline-secondary relbtn" v-on:click="relatoriodata()" >Relatório por data <i  class="large material-icons">picture_as_pdf</i></a>
+     <div class="relbtn">
+        <a v-if="produto != null" class="btn btn-outline-secondary linkpdf" v-on:click="relatoriocategoria()" >Relatório por Quantidade <i  class="large material-icons">picture_as_pdf</i></a> 
+        <a v-if="produto != null" class="btn btn-outline-secondary linkpdf" v-on:click="relatoriodata()" >Relatório por data <i  class="large material-icons">picture_as_pdf</i></a>
+     </div>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -44,7 +47,6 @@
             </tr>
         </tbody>
     </table>
-
   </div>
 </template>
 
@@ -63,7 +65,8 @@ export default {
             length: null,
             secao: null,
             delete: null,
-            reldata: null
+            reldata: null,
+            relcategoria: null
         }
     },
     mounted(){
@@ -78,6 +81,10 @@ export default {
 
         axios.get('https://apist.herokuapp.com/api/relatoriodata')
         .then(response => (this.reldata = response.data))
+        .catch(error => (this.error = error.data))
+
+        axios.get('https://apist.herokuapp.com/api/relatoriocategoria')
+        .then(response => (this.relcategoria = response.data))
         .catch(error => (this.error = error.data))
     },
     methods:{
@@ -147,7 +154,38 @@ export default {
             */ 
            pdfMake.createPdf(docDefinition).open();
         
+        },
+        relatoriocategoria(){
+            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            moment.locale('pt-BR')
+            
+           let corpo = [
+               ['Nº','Categoria', 'Quantidade']
+           ]
+            for(let i =0; i < this.relcategoria.length; i++ ){
+                corpo.push([ 
+                 i,
+                 this.relcategoria[i].descricao,
+                 this.relcategoria[i].quantidade
+                ])
+            }
+            
+            var docDefinition = {
+                content: [
+                    { text: 'Relatório', style: 'header' },
+                    { text: 'Relatório quantitativo de produtos por categoria.', style: 'subheader' },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            body: corpo
+                        }
+                    }
+                ]
+            };
+
+            pdfMake.createPdf(docDefinition).open();
         }
+
     }
 }
 </script>
@@ -176,9 +214,14 @@ export default {
 
 }
 .relbtn{
+    display: inline;
+    margin-top: 1%;
+    margin-left: 55%;
+    margin-right: 2%;
+}
+.linkpdf{
     display: inline-block;
     margin-top: 1%;
-    margin-left: 75%;
-    margin-right: 10%;
+    margin-left: 2%;
 }
 </style>
