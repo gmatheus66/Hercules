@@ -15,7 +15,7 @@
             <li v-if="inf.msg" :class="inf.msg.replace(/\s+/g, '')">{{inf.msg}}</li>
         </ul>
      </div>
-    <a class="btn btn-outline-secondary relbtn" v-on:click="relatoriodata()" >Relatório por data <i  class="large material-icons">picture_as_pdf</i></a>
+    <a v-if="produto != null" class="btn btn-outline-secondary relbtn" v-on:click="relatoriodata()" >Relatório por data <i  class="large material-icons">picture_as_pdf</i></a>
     <table class="table table-hover">
         <thead>
             <tr>
