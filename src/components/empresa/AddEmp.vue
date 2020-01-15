@@ -54,7 +54,7 @@
 <script>
 import axios from 'axios';
 const queryString = require('query-string');
-import { http } from '../../services/config';
+//import { http } from '../../services/config';
 export default {
     name: 'AddEmp',
     data(){
