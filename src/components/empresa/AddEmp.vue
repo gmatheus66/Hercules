@@ -52,7 +52,7 @@
     </div>
 </template>
 <script>
-//import axios from 'axios';
+import axios from 'axios';
 const queryString = require('query-string');
 import { http } from '../../services/config';
 export default {
