@@ -141,22 +141,22 @@ export default {
             var docDefinition = {
                 content: [
                     { text: 'Relatório', style: 'header' },
-                    { text: 'Relatório de produtos por data de vencimento.', style: 'subheader' },
+                    { text: 'Relatório de produtos por data de vencimento.', style: 'subheader', margin: [0,5], },
                     {
                         style: 'tableExample',
+                        margin: [0,20],
                         table: {
                             body: corpotable
                         }
                     }
                 ]
             };
-
             /*
-            let pdfDoc = printer.createPdfKitDocument(docDefinition);
+            let pdfDoc = pdfMake.createPdfKitDocument(docDefinition);
             pdfDoc.pipe(fs.createWriteStream('pdfs/basics.pdf'));
             pdfDoc.end();
-            */ 
-           pdfMake.createPdf(docDefinition).open();
+            */
+            pdfMake.createPdf(docDefinition).download();
         
         },
         relatoriocategoria(){
@@ -180,6 +180,7 @@ export default {
                     { text: 'Relatório quantitativo de produtos por categoria.', style: 'subheader' },
                     {
                         style: 'tableExample',
+                        margin: [5,10],
                         table: {
                             body: corpo
                         }
@@ -187,7 +188,14 @@ export default {
                 ]
             };
 
-            pdfMake.createPdf(docDefinition).open();
+
+            /*
+            let pdfDoc = printer.createPdfKitDocument(docDefinition);
+            pdfDoc.pipe(fs.createWriteStream('pdfs/basics.pdf'));
+            pdfDoc.end();
+            */
+
+            pdfMake.createPdf(docDefinition).download();
         }
 
     }
