@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <label for="cnpj" class="col-sm-2 col-form-label">CNPJ</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="cnpj" id="cnpj" v-model="form.cnpj" placeholder="CNPJ">
+                    <input type="text" class="form-control" name="cnpj" id="cnpj" v-on:blur="getcnpj" v-model="form.cnpj" placeholder="CNPJ">
                 </div>
             </div>
             <div class="form-group row">
@@ -49,6 +49,9 @@
             </div>
             <button class="submit" type="submit">Salvar<i class="large material-icons save">save</i></button>         
         </form>
+        {{this.gtcnpj}}
+        {{this.form}}
+        {{this.error}}
     </div>
 </template>
 <script>
@@ -68,7 +71,8 @@ export default {
                 nome_contato: ''
             },
             info: null,
-            error: null
+            error: null,
+            gtcnpj: null
 
         }
     },
@@ -86,6 +90,13 @@ export default {
                 .then(response => (this.info = response.data)).catch(error => (this.error = error))
               */
             },
+            getcnpj(){
+                //alert('oi');
+                axios
+                .get('https://www.receitaws.com.br/v1/cnpj/'+this.form.cnpj, {usecredentials: true})
+                .then(response => (this.gtcnpj = response.data))
+                .catch(error => (this.error = error))
+            }
            /*
             addempresa(){
                 axios.post({
