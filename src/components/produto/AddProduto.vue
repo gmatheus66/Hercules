@@ -182,7 +182,7 @@ export default {
             axios.post('https://apist.herokuapp.com/api/produto?', queryString.stringify(this.produto))
             .then(response => {
                 this.info = response.data
-             if(response.statusText == "OK" && this.data.data.msg == "Produto cadastrado com sucesso"){
+             if(response.statusText == "OK" && this.info.data.msg == "Produto cadastrado com sucesso"){
                     this.produto.codigo = null
                     this.produto.nome = null
                     this.produto.preco_custo = null
