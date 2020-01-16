@@ -45,7 +45,7 @@
                 <td>{{funcionario.estado}}</td>
                 <td>{{funcionario.pais}}</td>
                 <td> <router-link :to="'/editfuncionario/' + funcionario.id"  ><i class="large material-icons">create</i> </router-link></td>
-                <td><i v-on:click="delete_funcionario(funcionario.id, id)" class="large material-icons">delete_forever</i></td>
+                <td><i v-on:click="delete_funcionario(funcionario.id)" class="large material-icons">delete_forever</i></td>
             </tr>
         </tbody>
     </table>
@@ -87,13 +87,17 @@ export default {
                 }
             }
         },
-        delete_funcionario(id, deleteid){
+        delete_funcionario(id){
              axios
             .delete('https://apist.herokuapp.com/api/funcionario/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
             
-            this.funcionarios.splice(deleteid, 1)
+            for(let i = 0; i < this.funcionarios.length; i++){
+                if(this.funcionarios[i].id == id){
+                    this.funcionarios.splice(i,1);
+                }
+            }
         }
     }
 }

@@ -43,7 +43,7 @@
                 <td>{{prod.origem}}</td>
                 <td>{{getsecao(prod.secao_id)}}</td>
                 <td> <router-link :to="'/editproduto/' + prod.id"  ><i class="large material-icons">create</i> </router-link></td>
-                <td><i v-on:click="delete_produto(prod.id, id)" class="large material-icons">delete_forever</i></td>
+                <td><i v-on:click="delete_produto(prod.id)" class="large material-icons">delete_forever</i></td>
             </tr>
         </tbody>
     </table>
@@ -96,13 +96,17 @@ export default {
                 }
             }
         },
-        delete_produto(id, deleteid){
+        delete_produto(id){
              axios
             .delete('https://apist.herokuapp.com/api/produto/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
 
-            this.produto.splice(deleteid, 1)
+            for(let i = 0; i < this.produto.length; i++){
+                if(this.produto[i].id == id){
+                    this.produto.splice(i,1);
+                }
+            }
         },
         relatoriodata(){
             pdfMake.vfs = pdfFonts.pdfMake.vfs;

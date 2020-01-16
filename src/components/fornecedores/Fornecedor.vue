@@ -73,6 +73,13 @@ export default {
             .delete('https://apist.herokuapp.com/api/fornecedor/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
+
+
+            for(let i = 0; i < this.fornecedor.length; i++){
+                if(this.fornecedor[i].id == id){
+                    this.fornecedor.splice(i,1);
+                }
+            }
         }
     }
 }

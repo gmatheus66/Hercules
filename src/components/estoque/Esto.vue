@@ -35,7 +35,7 @@
                     <td>{{component.tipo_armazem}}</td>
                     <td v-show="l">{{empresa(component.empresa_id)}}</td>
                     <td> <router-link :to="'/editesto/' + component.id"  ><i class="large material-icons">create</i> </router-link></td>
-                    <td><i v-on:click="delete_estoque(component.id, idx)" class="large material-icons">delete_forever</i></td>
+                    <td><i v-on:click="delete_estoque(component.id)" class="large material-icons">delete_forever</i></td>
                 </tr>
             </tbody>
         </table>
@@ -85,13 +85,18 @@ export default {
            }
          
         },
-        delete_estoque(id, deleteid){
+        delete_estoque(id){
             axios
             .delete('https://apist.herokuapp.com/api/estoque/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
 
-            this.info.splice(deleteid,1)
+
+            for(let i = 0; i < this.info.length; i++){
+                if(this.info[i].id == id){
+                    this.info.splice(i,1);
+                }
+            }
         }
         
     }

@@ -40,7 +40,7 @@
                     <td>{{component.telefone}}</td>
                     <td>{{component.nome_contato}}</td>
                     <td> <router-link :to="'/editemp/' + component.id"  ><i class="large material-icons">create</i> </router-link></td>
-                    <td><i v-on:click="delete_empresa(component.id, idx)" class="large material-icons">delete_forever</i></td>
+                    <td><i v-on:click="delete_empresa(component.id)" class="large material-icons">delete_forever</i></td>
                 </tr>
             </tbody>
         </table>
@@ -95,13 +95,18 @@ export default {
         addParams(nome,id){
             this.$router.push({name: nome, params: {i: id}})
         },
-        delete_empresa(id, deleteid){
+        delete_empresa(id){
             axios
             .delete('https://apist.herokuapp.com/api/empresa/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.erroremp = error))
             
-            this.info.splice(deleteid,1)
+            for(let i = 0; i < this.info.length; i++){
+                if(this.info[i].id == id){
+                    this.info.splice(i,1);
+                }
+            }
+            //this.info.splice(deleteid,1)
 
             //timeout.setTimeout(this.delete.splice(0,1) , 1000)
         }
@@ -163,5 +168,8 @@ tr,th,td{
 a{
   text-decoration: none !important;
   color: black !important;
+}
+.large{
+    cursor: pointer !important;
 }
 </style>

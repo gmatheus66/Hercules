@@ -58,13 +58,17 @@ export default {
         .then(response => (this.marcas = response.data ))
     },
     methods:{
-         delete_marca(id,deleteid){
+         delete_marca(id){
             axios
             .delete('https://apist.herokuapp.com/api/marca/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
 
-            this.marcas.splice(deleteid,1)
+            for(let i = 0; i < this.marcas.length; i++){
+                if(this.marcas[i].id == id){
+                    this.marcas.splice(i,1);
+                }
+            }
             if(this.delete.status == 200){
                 this.$router.push('marca')
             }

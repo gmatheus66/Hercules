@@ -29,7 +29,7 @@
                 <td v-show="length">{{getestoque(secao.estoque_id)}}</td>
                 <td>{{secao.descricao}}</td>
                 <td> <router-link :to="'/editsecao/' + secao.id"  ><i class="large material-icons">create</i> </router-link></td>
-                <td><i v-on:click="delete_secao(secao.id, id)" class="large material-icons">delete_forever</i></td>
+                <td><i v-on:click="delete_secao(secao.id)" class="large material-icons">delete_forever</i></td>
             </tr>
         </tbody>
 
@@ -72,13 +72,17 @@ export default {
             }
 
         },
-        delete_secao(id,deleteid){
+        delete_secao(id){
             axios
             .delete('https://apist.herokuapp.com/api/secaoestoque/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
 
-            this.secoes.splice(deleteid, 1)
+            for(let i = 0; i < this.secoes.length; i++){
+                if(this.secoes[i].id == id){
+                    this.secoes.splice(i,1);
+                }
+            }
         }
     }
 }

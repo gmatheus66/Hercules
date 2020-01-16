@@ -29,7 +29,7 @@
                 <td>{{categoria.id}}</td>
                 <td>{{categoria.descricao}}</td>
                 <td> <router-link :to="'/editcategoria/' + categoria.id"  ><i class="large material-icons">create</i> </router-link></td>
-                <td><i v-on:click="delete_categoria(categoria.id, id)" class="large material-icons">delete_forever</i></td>
+                <td><i v-on:click="delete_categoria(categoria.id)" class="large material-icons">delete_forever</i></td>
             </tr>
 
         </tbody>
@@ -57,13 +57,18 @@ export default {
         .then(response => (this.categorias = response.data))
     },
     methods:{
-        delete_categoria(id, deleteid){
+        delete_categoria(id){
              axios
             .delete('https://apist.herokuapp.com/api/categoria/'+ id)
             .then(response => (this.delete = response.data))
             .catch(error =>(this.error = error))
 
-            this.categorias.splice(deleteid, id)
+
+            for(let i = 0; i < this.categorias.length; i++){
+                if(this.categorias[i].id == id){
+                    this.categorias.splice(i,1);
+                }
+            }
         }
     }
 }
