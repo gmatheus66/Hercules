@@ -26,7 +26,7 @@
         <div class="form-group row">
             <label for="cnpj" class="col-sm-2 col-form-label">CNPJ</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" name="cnpj" id="cnpj" v-model="fornecedor.cnpj" placeholder="CNPJ">
+                <input type="number" class="form-control" name="cnpj" id="cnpj" v-on:blur="getcnpj" v-model="fornecedor.cnpj" placeholder="CNPJ">
             </div>
         </div>
          <div class="form-group row">
@@ -42,7 +42,7 @@
             </div>
             <label for="cep" class="col-sm-1 col-form-label">Cep</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="cep" id="cep" v-on:keyup="validationcep" v-model="fornecedor.cep" placeholder="Cep">
+                <input type="number" class="form-control" maxlength="8" name="cep" id="cep" v-on:keyup="validationcep" v-model="fornecedor.cep" placeholder="Cep">
             </div>
         </div>
          <div class="form-group row">
@@ -94,7 +94,8 @@ export default {
                 cidade: null,
                 pais: null,
                 estado: null
-            }
+            },
+            gtcnpj: null
         }
     },
     methods:{
@@ -120,6 +121,28 @@ export default {
                 }
 
 
+            })
+            .catch(error => (this.error = error))
+        },
+        getcnpj(){
+            axios
+            .get('https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/'+this.fornecedor.cnpj,  {
+                crossdomain: true,
+                headers:{
+                    'Access-Control-Allow-Origin': 'https://herculestock.herokuapp.com/',
+                }    
+            
+            })
+            .then(response => {
+                this.gtcnpj = response.data
+                if(this.gtcnpj){
+                    this.fornecedor.razao_social = this.gtcnpj.nome
+                    this.fornecedor.nome_fantasia = this.gtcnpj.fantasia
+                    this.fornecedor.estado = this.gtcnpj.uf
+                    this.fornecedor.cidade = this.gtcnpj.municipio
+                    this.fornecedor.bairro = this.gtcnpj.bairro
+                    this.fornecedor.numero_residencia = this.gtcnpj.numero
+                }
             })
             .catch(error => (this.error = error))
         }

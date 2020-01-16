@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <label for="cnpj" class="col-sm-2 col-form-label">CNPJ</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="cnpj" id="cnpj" v-on:blur="getcnpj" v-model="form.cnpj" placeholder="CNPJ">
+                    <input type="number" class="form-control" name="cnpj" id="cnpj" v-on:blur="getcnpj" v-model="form.cnpj" placeholder="CNPJ">
                 </div>
             </div>
             <div class="form-group row">
@@ -49,9 +49,6 @@
             </div>
             <button class="submit" type="submit">Salvar<i class="large material-icons save">save</i></button>         
         </form>
-        {{this.gtcnpj}}
-        {{this.form}}
-        {{this.error}}
     </div>
 </template>
 <script>
@@ -72,7 +69,7 @@ export default {
             },
             info: null,
             error: null,
-            gtcnpj: null
+            gtcnpj: null,
 
         }
     },
@@ -91,26 +88,24 @@ export default {
               */
             },
             getcnpj(){
-                //alert('oi');
                 axios
-                .get('https://www.receitaws.com.br/v1/cnpj/'+this.form.cnpj, {usecredentials: true})
-                .then(response => (this.gtcnpj = response.data))
+                .get('https://cors-anywhere.herokuapp.com/https://www.receitaws.com.br/v1/cnpj/'+this.form.cnpj,  {
+                    crossdomain: true,
+                    headers:{
+                        'Access-Control-Allow-Origin': 'https://herculestock.herokuapp.com/',
+                    }    
+                
+                })
+                .then(response => {
+                    this.gtcnpj = response.data
+                    if(this.gtcnpj){
+                        this.form.razao = this.gtcnpj.nome
+                        this.form.nome_fantasia = this.gtcnpj.fantasia
+                    }
+                })
                 .catch(error => (this.error = error))
             }
-           /*
-            addempresa(){
-                axios.post({
-                method: 'post',
-                url: 'https://apist.herokuapp.com/api/empresa',
-                crossdomain: true,
-                //data: $(".formadd").serialize()
-                }).then(function(response){
-                    this.info = response;
-                }).catch(error => {
-                    this.info = error.response;
-                });
-            }
-            */
+          
         
     }
 }
