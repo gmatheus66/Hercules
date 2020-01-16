@@ -27,7 +27,7 @@ export default {
     color: black
 }
 .subtitulo{
-    margin-left: 7%;
+    margin-left: 4%;
     color: black
 }
 .header{
