@@ -77,15 +77,19 @@ export default {
         
             onSubmit(evt) {
                 evt.preventDefault()
-                //alert(queryString.stringify(this.form))
                 
                 axios
                 .post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form))
-                .then(response => (this.info = response.data)).catch(error => (this.error = error))
-                /*
-                http.post('https://apist.herokuapp.com/api/empresa?', queryString.stringify(this.form))
-                .then(response => (this.info = response.data)).catch(error => (this.error = error))
-              */
+                .then(response => {this.info = response.data
+                    if(response.statusText == "OK" && this.info.data.msg == "Empresa cadastrada com sucesso"){
+                        this.form.razao = null
+                        this.form.cnpj = null
+                        this.form.nome_fantasia = null
+                        this.form.ddd = null
+                        this.form.telefone = null
+                        this.form.nome_contato = null
+                    }
+                }).catch(error => (this.error = error))
             },
             getcnpj(){
                 axios
@@ -98,7 +102,7 @@ export default {
                 })
                 .then(response => {
                     this.gtcnpj = response.data
-                    if(this.gtcnpj){
+                    if(this.gtcnpj && this.gtcnpj.message != "CNPJ inválido"){
                         this.form.razao = this.gtcnpj.nome
                         this.form.nome_fantasia = this.gtcnpj.fantasia
                     }

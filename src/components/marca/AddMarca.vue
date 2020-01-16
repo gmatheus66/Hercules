@@ -44,7 +44,12 @@ export default {
         addmarca(evt){
             evt.preventDefault();
             axios.post('https://apist.herokuapp.com/api/marca?', queryString.stringify(this.marca))
-            .then(response => (this.info = response.data))
+            .then(response => {
+                this.info = response.data
+                if(response.statusText == "OK" && this.info.data.msg == "Marca cadastrada com sucesso"){
+                    this.marca.descricao = null
+                }
+            })
             .catch(error => (this.error = error.data))
         }
     }

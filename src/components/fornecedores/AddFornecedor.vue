@@ -102,7 +102,22 @@ export default {
         addfornecedor(evt){
             evt.preventDefault();
             axios.post('https://apist.herokuapp.com/api/fornecedor?', queryString.stringify(this.fornecedor))
-            .then(response => (this.info = response.data))
+            .then(response => {
+                this.info = response.data
+                if(response.statusText == "OK" && this.info.data.msg == "Fornecedor cadastrado com sucesso"){
+                    this.fornecedor.razao_social = null
+                    this.fornecedor.nome_fantasia = null
+                    this.fornecedor.cnpj = null
+                    this.fornecedor.endereco = null
+                    this.fornecedor.cep = null
+                    this.fornecedor.numero_residencia = null
+                    this.fornecedor.bairro = null
+                    this.fornecedor.cidade = null
+                    this.fornecedor.pais = null
+                    this.fornecedor.estado = null
+                }
+            
+            })
             .catch(error => (this.error = error.data))
         },
         validationcep(){
@@ -135,7 +150,7 @@ export default {
             })
             .then(response => {
                 this.gtcnpj = response.data
-                if(this.gtcnpj){
+                if(this.gtcnpj && this.gtcnpj.message != "CNPJ inválido"){
                     this.fornecedor.razao_social = this.gtcnpj.nome
                     this.fornecedor.nome_fantasia = this.gtcnpj.fantasia
                     this.fornecedor.estado = this.gtcnpj.uf

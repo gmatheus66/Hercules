@@ -76,7 +76,15 @@ export default {
             evt.preventDefault();
             axios
             .post('https://apist.herokuapp.com/api/estoque?', queryString.stringify(this.estoque))
-            .then(response => (this.save = response.data)).catch(error => (this.info = error))
+            .then(response => {
+                this.save = response.data
+                if(response.statusText == "OK" && this.save.data.msg == "Estoque cadastrado com sucesso"){
+                    this.estoque.codigo = null
+                    this.estoque.descricao = null
+                    this.estoque.tipo_armazem = null
+                    this.estoque.empresa_id = null
+                }
+            }).catch(error => (this.info = error))
         }
     }
 

@@ -44,7 +44,12 @@ export default {
         addcategoria(evt){
             evt.preventDefault();
             axios.post('https://apist.herokuapp.com/api/categoria?', queryString.stringify(this.categoria))
-            .then(response => (this.info = response.data))
+            .then(response => {
+                this.info = response.data
+                if(response.statusText == "OK" && this.info.data.msg == "Categoria cadastrada com sucesso"){
+                    this.categoria.descricao = null
+                }
+            })
             .catch(error => (this.error = error))
         }
     }

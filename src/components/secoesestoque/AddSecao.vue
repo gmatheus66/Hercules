@@ -58,7 +58,13 @@ export default {
             evt.preventDefault();
             //alert(queryString.stringify(this.secao))
             axios.post('https://apist.herokuapp.com/api/secaoestoque?', queryString.stringify(this.secao))
-            .then(response => (this.info = response.data))
+            .then(response => {
+                this.info = response.data
+                if(response.statusText == "OK" && this.info.data.msg == "Seção cadastrada com sucesso"){
+                    this.secao.descricao = null
+                    this.secao.estoque_id = null
+                }
+            })
             .catch(error => (this.error = error))
         }
     }
