@@ -180,7 +180,28 @@ export default {
         addproduto(evt){
             evt.preventDefault();
             axios.post('https://apist.herokuapp.com/api/produto?', queryString.stringify(this.produto))
-            .then(response => {this.info = response.data})
+            .then(response => {
+                this.info = response.data
+             if(response.statusText == "OK" && this.data.data.msg == "Produto cadastrado com sucesso"){
+                    this.produto.codigo = null
+                    this.produto.nome = null
+                    this.produto.preco_custo = null
+                    this.produto.lucro = null
+                    this.produto.preco_venda = null
+                    this.produto.icms = null
+                    this.produto.subst_tributaria = null
+                    this.produto.cst_nfe = null
+                    this.produto.ncm_nfe = null
+                    this.produto.unidade_medida = null
+                    this.produto.origem = null
+                    this.produto.codigo_barras = null
+                    this.produto.marca_id = null
+                    this.produto.categoria_id = null
+                    this.produto.secao_id = null
+                    this.produto.fornecedor_id = null
+                    this.produto.data_validade = null
+                }
+            })
             .catch(error => (this.error = error))
         }
     }
